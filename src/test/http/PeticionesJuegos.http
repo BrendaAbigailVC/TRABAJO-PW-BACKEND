@@ -1,2 +1,35 @@
-# Obtener todos los juegos
+### Obtener todos los juegos
 GET http://localhost:5000/juegos HTTP/1.1
+
+### Agregar un nuevo juego
+POST http://localhost:5000/juegos HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "Galaxy Raiders",
+  "descripcion": "Explora el universo y combate alienígenas.",
+  "categoriaId": 1,
+  "plataformaId": 2,
+  "precio": 49.99,
+  "descuento": 15,
+  "oferta": true,
+  "ventas": 30,
+  "valoracion": 4.8,
+  "imagen": "galaxyraiders.jpg",
+  "trailer": "galaxyraiders_trailer.mp4",
+  "fecha": "2025-01-15"
+}
+
+### Editar un juego por ID
+PUT http://localhost:5000/juegos/1 HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "CyberQuest Remastered",
+  "precio": 39.99,
+  "descuento": 20,
+  "oferta": true
+}
+
+### Eliminar un juego por ID
+DELETE http://localhost:5000/juegos/3 HTTP/1.1
