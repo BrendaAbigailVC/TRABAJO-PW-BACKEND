@@ -1,0 +1,2 @@
+# Obtener todos los juegos
+GET http://localhost:5000/juegos HTTP/1.1

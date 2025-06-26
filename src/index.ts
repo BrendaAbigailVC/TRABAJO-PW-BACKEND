@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express"
 import bodyParser from "body-parser"
 import cors from "cors"
-import GamesController from "./controllers/GamesController"
+import JuegosController from "./controllers/JuegosController"
 
 const app = express()
 
@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cors())
 
-app.use("/games", GamesController())
+app.use("/juegos", JuegosController())
 
 
 app.listen(PORT, ()=>{
