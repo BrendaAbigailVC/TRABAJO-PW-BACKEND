@@ -67,7 +67,6 @@ const JuegosController = () => {
     res.status(201).json(nuevoJuego);
   });
 
-
   // Editar un juego por ID
   router.put("/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
@@ -119,7 +118,6 @@ const JuegosController = () => {
     const eliminado = juegos.splice(index, 1)[0]
     res.json(eliminado)
   })
-
 
   return router
 }

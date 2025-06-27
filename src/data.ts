@@ -71,7 +71,6 @@ export interface Review {
 }
 
 
-
 //Datos de ejemplo
 export const usuarios: Usuario[] = [
   { usuarioId: 1, email: "alice@example.com", password: "123", username: "alice", token: "abc123", estado: "activo" },
