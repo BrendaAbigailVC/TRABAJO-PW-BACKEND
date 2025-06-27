@@ -103,6 +103,51 @@ export const juegos: Juego[] = [
     imagen: "cyberquest.jpg",
     trailer: "cyberquest_trailer.mp4",
     fecha: "2024-10-01"
+  },
+  {
+    juegoId: 2,
+    nombre: "Fantasy Legends",
+    descripcion: "Aventura épica en un mundo de fantasía.",
+    categoriaId: 2,
+    plataformaId: 2,
+    precio: 49.99,
+    descuento: 0,
+    oferta: false,
+    ventas: 300,
+    valoracion: 4.8,
+    imagen: "fantasy_legends.jpg",
+    trailer: "fantasy_legends_trailer.mp4",
+    fecha: "2024-08-15"
+  },
+  {
+    juegoId: 3,
+    nombre: "Speed Drift",
+    descripcion: "Carreras intensas con gráficos realistas.",
+    categoriaId: 3,
+    plataformaId: 3,
+    precio: 39.99,
+    descuento: 15,
+    oferta: true,
+    ventas: 500,
+    valoracion: 4.3,
+    imagen: "speed_drift.jpg",
+    trailer: "speed_drift_trailer.mp4",
+    fecha: "2025-01-20"
+  },
+  {
+    juegoId: 4,
+    nombre: "Puzzle Master",
+    descripcion: "Resuelve acertijos desafiantes.",
+    categoriaId: 4,
+    plataformaId: 1,
+    precio: 19.99,
+    descuento: 5,
+    oferta: true,
+    ventas: 200,
+    valoracion: 4.0,
+    imagen: "puzzle_master.jpg",
+    trailer: "puzzle_master_trailer.mp4",
+    fecha: "2023-12-05"
   }
 ];
 

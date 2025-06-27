@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express"
-import { Juego, juegos } from "../data"
+import { Juego, juegos, categorias, plataformas } from "../data"
 
 let nextId = juegos.length + 1
 
@@ -22,9 +22,9 @@ const JuegosController = () => {
   router.put("/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id)
     const index = juegos.findIndex(j => j.juegoId === id)
-    if (index === -1) 
-        //res.status(404).json({ error: "Juego no encontrado" })
-        return 
+    if (index === -1)
+      //res.status(404).json({ error: "Juego no encontrado" })
+      return
 
     juegos[index] = { ...juegos[index], ...req.body, juegoId: id }
     res.json(juegos[index])
@@ -34,14 +34,15 @@ const JuegosController = () => {
   router.delete("/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id)
     const index = juegos.findIndex(j => j.juegoId === id)
-    if (index === -1) 
-        //res.status(404).json({ error: "Juego no encontrado" })
-        return 
+    if (index === -1)
+      //res.status(404).json({ error: "Juego no encontrado" })
+      return
 
     const eliminado = juegos.splice(index, 1)[0]
     res.json(eliminado)
   })
 
+  
   return router
 }
 
