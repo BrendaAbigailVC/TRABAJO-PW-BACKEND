@@ -6,11 +6,6 @@ let nextId = juegos.length + 1
 const JuegosController = () => {
   const router = express.Router()
 
-  // Obtener todos los juegos
-  /*router.get("/", async (req: Request, res: Response) => {
-     res.json(juegos)
-   })*/
-
   // Obtener todos los juegos con nombres de categoría y plataforma
   router.get("/", async (req: Request, res: Response) => {
     const juegosEnriquecidos = juegos.map(juego => {
@@ -18,7 +13,17 @@ const JuegosController = () => {
       const plataforma = plataformas.find(p => p.plataformaId === juego.plataformaId);
 
       return {
-        ...juego,
+        juegoId: juego.juegoId,
+        nombre: juego.nombre,
+        descripcion: juego.descripcion,
+        precio: juego.precio,
+        descuento: juego.descuento,
+        oferta: juego.oferta,
+        ventas: juego.ventas,
+        valoracion: juego.valoracion,
+        imagen: juego.imagen,
+        trailer: juego.trailer,
+        fecha: juego.fecha,
         categoria: categoria?.nombre || "Desconocida",
         plataforma: plataforma?.nombre || "Desconocida"
       };
@@ -27,13 +32,11 @@ const JuegosController = () => {
     res.json(juegosEnriquecidos);
   });
 
-
   // Agregar un nuevo juego
   router.post("/", async (req: Request, res: Response) => {
     const { nombre, descripcion, categoria, plataforma, precio, descuento, oferta, ventas, valoracion, imagen, trailer,
     } = req.body;
 
-    // Convertir nombres a IDs
     const categoriaEncontrada = categorias.find(c => c.nombre === categoria);
     const plataformaEncontrada = plataformas.find(p => p.nombre === plataforma);
 
@@ -42,7 +45,6 @@ const JuegosController = () => {
       return
     }
 
-    // Generar fecha actual en formato YYYY-MM-DD
     const fechaActual = new Date().toISOString().split("T")[0];
 
     const nuevoJuego: Juego = {
@@ -68,23 +70,51 @@ const JuegosController = () => {
 
   // Editar un juego por ID
   router.put("/:id", async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id)
-    const index = juegos.findIndex(j => j.juegoId === id)
-    if (index === -1)
-      //res.status(404).json({ error: "Juego no encontrado" })
-      return
+    const id = parseInt(req.params.id);
+    const index = juegos.findIndex(j => j.juegoId === id);
 
-    juegos[index] = { ...juegos[index], ...req.body, juegoId: id }
-    res.json(juegos[index])
-  })
+    if (index === -1) {
+      res.status(404).json({ error: "Juego no encontrado" });
+      return
+    }
+
+    const { nombre, descripcion, categoria, plataforma, precio, descuento, oferta, ventas, valoracion, imagen, trailer} = req.body;
+    const categoriaEncontrada = categorias.find(c => c.nombre === categoria);
+    const plataformaEncontrada = plataformas.find(p => p.nombre === plataforma);
+
+    if (!categoriaEncontrada || !plataformaEncontrada) {
+      res.status(400).json({ error: "Categoría o plataforma inválida" });
+      return
+    }
+
+    const juegoActualizado: Juego = {
+      ...juegos[index],
+      nombre,
+      descripcion,
+      categoriaId: categoriaEncontrada.categoriaId,
+      plataformaId: plataformaEncontrada.plataformaId,
+      precio,
+      descuento,
+      oferta,
+      ventas,
+      valoracion,
+      imagen,
+      trailer,
+    };
+
+    juegos[index] = juegoActualizado;
+
+    res.json(juegoActualizado);
+  });
 
   // Eliminar un juego por ID
   router.delete("/:id", async (req: Request, res: Response) => {
     const id = parseInt(req.params.id)
     const index = juegos.findIndex(j => j.juegoId === id)
-    if (index === -1)
-      //res.status(404).json({ error: "Juego no encontrado" })
+    if (index === -1) {
+      res.status(404).json({ error: "Juego no encontrado" });
       return
+    }
 
     const eliminado = juegos.splice(index, 1)[0]
     res.json(eliminado)

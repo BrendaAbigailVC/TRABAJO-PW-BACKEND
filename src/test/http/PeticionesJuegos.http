@@ -8,35 +8,35 @@ Content-Type: application/json
 {
   "nombre": "Nuevo Juego",
   "descripcion": "Juego de prueba",
-  "categoria": "RPG",
-  "plataforma": "Nintendo",
   "precio": 49.99,
   "descuento": 5,
   "oferta": true,
   "ventas": 0,
   "valoracion": 0,
   "imagen": "nuevo_juego.jpg",
-  "trailer": "trailer.mp4"
+  "trailer": "trailer.mp4",
+  "categoria": "RPG",
+  "plataforma": "Nintendo"
 }
-
 
 ### Editar un juego por ID
 PUT http://localhost:5000/juegos/1 HTTP/1.1
 Content-Type: application/json
 
 {
-  "nombre": "Nuevo Juego",
-  "descripcion": "Juego de prueba",
+  "nombre": "CyberQuest Reloaded",
+  "descripcion": "Actualización con nuevos niveles",
   "categoria": "RPG",
   "plataforma": "Nintendo",
   "precio": 49.99,
   "descuento": 5,
   "oferta": true,
-  "ventas": 0,
-  "valoracion": 0,
-  "imagen": "nuevo_juego.jpg",
-  "trailer": "trailer.mp4"
+  "ventas": 200,
+  "valoracion": 4.7,
+  "imagen": "nuevo.jpg",
+  "trailer": "nuevo_trailer.mp4"
 }
+
 
 ### Eliminar un juego por ID
 DELETE http://localhost:5000/juegos/3 HTTP/1.1
