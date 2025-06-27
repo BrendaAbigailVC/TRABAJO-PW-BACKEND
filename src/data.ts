@@ -80,12 +80,14 @@ export const usuarios: Usuario[] = [
 
 export const categorias: Categoria[] = [
   { categoriaId: 1, nombre: "Acción" },
-  { categoriaId: 2, nombre: "Aventura" }
+  { categoriaId: 2, nombre: "Aventura" },
+  { categoriaId: 3, nombre: "RPG" }
 ];
 
 export const plataformas: Plataforma[] = [
   { plataformaId: 1, nombre: "PC" },
-  { plataformaId: 2, nombre: "PlayStation" }
+  { plataformaId: 2, nombre: "PlayStation" },
+  { plataformaId: 3, nombre: "Nintendo" },
 ];
 
 export const juegos: Juego[] = [
