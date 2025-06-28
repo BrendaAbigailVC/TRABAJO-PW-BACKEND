@@ -149,7 +149,7 @@ const JuegosController = () => {
     res.json(resultadosEnriquecidos);
   });
 
-  //Filtrar juegos mediante categoria y fecha 
+  //Filtrar juegos mediante categoria, fecha y rango de precios
   router.get("/filtrar", (req: Request, res: Response) => {
     const { categoria, fecha, precioMin, precioMax } = req.query;
 
