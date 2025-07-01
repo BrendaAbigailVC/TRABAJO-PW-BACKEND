@@ -13,3 +13,99 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  usuarioId Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  username  String
+  token     String
+  estado    String
+
+  ventas    Venta[]
+  reviews   Review[]
+}
+
+model Noticia {
+  noticiaId Int     @id @default(autoincrement())
+  titulo    String
+  texto     String
+  activo    Boolean
+}
+
+
+model Venta {
+  ventaId     Int      @id @default(autoincrement())
+  fecha       DateTime
+  usuario     Usuario  @relation(fields: [usuarioId], references: [usuarioId])
+  usuarioId   Int
+  juego       Juego    @relation(fields: [juegoId], references: [juegoId])
+  juegoId     Int
+  montoPagado Float
+  claveJuego  ClaveJuego?
+}
+
+
+model Juego {
+  juegoId     Int          @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  categoria   Categoria    @relation(fields: [categoriaId], references: [categoriaId])
+  categoriaId Int
+  plataforma  Plataforma   @relation(fields: [plataformaId], references: [plataformaId])
+  plataformaId Int
+  precio      Float
+  descuento   Float
+  oferta      Boolean
+  ventas      Int
+  valoracion  Float
+  imagen      String
+  trailer     String
+  fecha       DateTime
+
+  ventasJuego Venta[]
+  claves      ClaveJuego[]
+  imagenes    ImagenJuego[]
+  reviews     Review[]
+}
+
+model Categoria {
+  categoriaId Int     @id @default(autoincrement())
+  nombre      String
+  juegos      Juego[]
+}
+
+model Plataforma {
+  plataformaId Int     @id @default(autoincrement())
+  nombre       String
+  juegos       Juego[]
+}
+
+
+model ClaveJuego {
+  claveJuegoId Int    @id @default(autoincrement())
+  juegoId      Int
+  juego        Juego  @relation(fields: [juegoId], references: [juegoId])
+  ventaId      Int  @unique
+  venta        Venta  @relation(fields: [ventaId], references: [ventaId])
+  codigoClave  String
+}
+
+
+model ImagenJuego {
+  imagenJuegoId Int    @id @default(autoincrement())
+  juego         Juego  @relation(fields: [juegoId], references: [juegoId])
+  juegoId       Int
+  urlImagen     String
+}
+
+model Review {
+  reviewId  Int      @id @default(autoincrement())
+  juego     Juego    @relation(fields: [juegoId], references: [juegoId])
+  juegoId   Int
+  usuario   Usuario  @relation(fields: [usuarioId], references: [usuarioId])
+  usuarioId Int
+  rating    Int
+  comment   String
+  fecha     DateTime
+}
