@@ -32,7 +32,7 @@ const JuegosController = () => {
     res.json(juegosEnriquecidos);
   });
 
-  // Agregar un nuevo juego
+  // Agregar un juego nuevo
   router.post("/", async (req: Request, res: Response) => {
     const { nombre, descripcion, categoria, plataforma, precio, descuento, oferta, ventas, valoracion, imagen, trailer,
     } = req.body;
