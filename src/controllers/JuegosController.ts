@@ -44,38 +44,59 @@ const JuegosController = () => {
 
   // Agregar un juego nuevo
   router.post("/", async (req: Request, res: Response) => {
-    const { nombre, descripcion, categoria, plataforma, precio, descuento, oferta, ventas, valoracion, imagen, trailer,
-    } = req.body;
-
-    const categoriaEncontrada = categorias.find(c => c.nombre === categoria);
-    const plataformaEncontrada = plataformas.find(p => p.nombre === plataforma);
-
-    if (!categoriaEncontrada || !plataformaEncontrada) {
-      res.status(400).json({ error: "Categoría o plataforma inválida" });
-      return
-    }
-
-    const fechaActual = new Date().toISOString().split("T")[0];
-
-    const nuevoJuego: Juego = {
-      juegoId: nextId++,
+    const {
       nombre,
       descripcion,
-      categoriaId: categoriaEncontrada.categoriaId,
-      plataformaId: plataformaEncontrada.plataformaId,
+      categoria,
+      plataforma,
       precio,
       descuento,
       oferta,
       ventas,
       valoracion,
       imagen,
-      trailer,
-      fecha: fechaActual
-    };
+      trailer
+    } = req.body
 
-    juegos.push(nuevoJuego);
-    res.status(201).json(nuevoJuego);
-  });
+    try {
+      const categoriaEncontrada = await prisma.categoria.findFirst({
+        where: { nombre: categoria }
+      })
+
+      const plataformaEncontrada = await prisma.plataforma.findFirst({
+        where: { nombre: plataforma }
+      })
+
+      if (!categoriaEncontrada || !plataformaEncontrada) {
+        res.status(400).json({
+          error: "Categoría o plataforma inválida"
+        })
+        return
+      }
+
+      const nuevoJuego = await prisma.juego.create({
+        data: {
+          nombre,
+          descripcion,
+          categoriaId: categoriaEncontrada.categoriaId,
+          plataformaId: plataformaEncontrada.plataformaId,
+          precio,
+          descuento,
+          oferta,
+          ventas,
+          valoracion,
+          imagen,
+          trailer,
+          fecha: new Date()
+        }
+      })
+
+      res.status(201).json(nuevoJuego)
+    } catch (error) {
+      console.error("Error al crear juego:", error)
+      res.status(500).json({ error: "Error interno al crear juego" })
+    }
+  })
 
   // Editar un juego por ID
   router.put("/:id", async (req: Request, res: Response) => {
