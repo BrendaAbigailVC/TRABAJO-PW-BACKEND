@@ -223,7 +223,62 @@ const JuegosController = () => {
 });
 
   //Filtrar juegos mediante categoria, fecha y rango de precios
- 
+  
+router.get("/filtrar", async (req: Request, res: Response) => {
+  const { categoria, fecha, precioMin, precioMax } = req.query;
+
+  try {
+    // Filtro dinámico
+    const filtros: any = {};
+
+    // Buscar ID de categoría por nombre
+    if (categoria && typeof categoria === "string") {
+      const categoriaEncontrada = await prisma.categoria.findFirst({
+        where: {
+          nombre: { equals: categoria, mode: "insensitive" },
+        },
+      });
+
+      if (!categoriaEncontrada) {
+         res.status(404).json({ error: "Categoría no encontrada." });
+         return
+      }
+
+      filtros.categoriaId = categoriaEncontrada.categoriaId;
+    }
+
+    // Filtrar por fecha exacta 
+    if (fecha && typeof fecha === "string") {
+      filtros.fecha = new Date(fecha);
+    }
+
+    // Filtrar por rango de precio
+    if (precioMin || precioMax) {
+      filtros.precio = {};
+      if (precioMin) filtros.precio.gte = parseFloat(precioMin as string);
+      if (precioMax) filtros.precio.lte = parseFloat(precioMax as string);
+    }
+
+    const juegosFiltrados = await prisma.juego.findMany({
+      where: filtros,
+      include: {
+        categoria: true,
+        plataforma: true,
+      },
+    });
+
+    const resultados = juegosFiltrados.map(juego => ({
+      ...juego,
+      categoria: juego.categoria?.nombre || "Desconocida",
+      plataforma: juego.plataforma?.nombre || "Desconocida",
+    }));
+
+    res.json(resultados);
+  } catch (error) {
+    console.error("Error al filtrar juegos:", error);
+    res.status(500).json({ error: "Error al filtrar juegos" });
+  }
+});
 
   return router
 }
