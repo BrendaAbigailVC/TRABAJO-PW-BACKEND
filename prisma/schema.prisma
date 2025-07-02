@@ -42,9 +42,8 @@ model Venta {
   juego       Juego    @relation(fields: [juegoId], references: [juegoId])
   juegoId     Int
   montoPagado Float
-  claveJuego  ClaveJuego?
+  claves      ClaveJuego[]
 }
-
 
 model Juego {
   juegoId     Int          @id @default(autoincrement())
@@ -86,7 +85,7 @@ model ClaveJuego {
   claveJuegoId Int    @id @default(autoincrement())
   juegoId      Int
   juego        Juego  @relation(fields: [juegoId], references: [juegoId])
-  ventaId      Int  @unique
+  ventaId      Int  
   venta        Venta  @relation(fields: [ventaId], references: [ventaId])
   codigoClave  String
 }
