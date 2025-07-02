@@ -41,7 +41,7 @@ Content-Type: application/json
 DELETE http://localhost:5000/juegos/3 HTTP/1.1
 
 ### Buscar juegos por nombre 
-GET http://localhost:5000/juegos/search?nombre=cyb HTTP/1.1
+GET http://localhost:5000/juegos/search?nombre=Puz HTTP/1.1
 
 ### Filtrar juegos por fecha exacta
 GET http://localhost:5000/juegos/filtrar?fecha=2024-10-01 HTTP/1.1

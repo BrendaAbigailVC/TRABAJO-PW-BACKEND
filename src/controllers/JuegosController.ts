@@ -186,87 +186,44 @@ const JuegosController = () => {
   });
 
   //Busqueda de juego mediante nombre
-  router.get("/search", (req: Request, res: Response) => {
-    const { nombre } = req.query;
+  router.get("/search", async (req: Request, res: Response) => {
+  const { nombre } = req.query;
 
-    if (!nombre || typeof nombre !== "string") {
-      res.status(400).json({ error: "Debes proporcionar un nombre de juego a buscar." });
-      return
-    }
+  if (!nombre || typeof nombre !== "string") {
+    res.status(400).json({ error: "Debes proporcionar un nombre de juego a buscar." });
+    return;
+  }
 
-    // Búsqueda insensible a mayúsculas y espacios
-    const nombreBuscado = nombre.trim().toLowerCase();
+  const nombreBuscado = nombre.trim().toLowerCase();
 
-    const resultados = juegos.filter(j =>
-      j.nombre.toLowerCase().includes(nombreBuscado)
-    );
-
-    const resultadosEnriquecidos = resultados.map(juego => {
-      const categoria = categorias.find(c => c.categoriaId === juego.categoriaId);
-      const plataforma = plataformas.find(p => p.plataformaId === juego.plataformaId);
-
-      return {
-        ...juego,
-        categoria: categoria?.nombre || "Desconocida",
-        plataforma: plataforma?.nombre || "Desconocida"
-      };
+  try {
+    const resultados = await prisma.juego.findMany({
+      where: {
+        nombre: {
+          contains: nombreBuscado,
+          mode: "insensitive", 
+        },
+      },
+      include: {
+        categoria: true,
+        plataforma: true,
+      },
     });
 
-    res.json(resultadosEnriquecidos);
-  });
+    const resultadosFormateados = resultados.map(juego => ({
+      ...juego,
+      categoria: juego.categoria?.nombre || "Desconocida",
+      plataforma: juego.plataforma?.nombre || "Desconocida",
+    }));
+
+    res.json(resultadosFormateados);
+  } catch (error) {
+    res.status(500).json({ error: "Error al buscar juegos" });
+  }
+});
 
   //Filtrar juegos mediante categoria, fecha y rango de precios
-  router.get("/filtrar", (req: Request, res: Response) => {
-    const { categoria, fecha, precioMin, precioMax } = req.query;
-
-    let juegosFiltrados = [...juegos];
-
-    // Filtrar por categoría
-    if (categoria && typeof categoria === "string") {
-      const categoriaEncontrada = categorias.find(
-        c => c.nombre.toLowerCase() === categoria.toLowerCase()
-      );
-
-      if (!categoriaEncontrada) {
-        res.status(404).json({ error: "Categoría no encontrada." });
-        return
-      }
-
-      juegosFiltrados = juegosFiltrados.filter(
-        j => j.categoriaId === categoriaEncontrada.categoriaId
-      );
-    }
-
-    // Filtrar por fecha
-    if (fecha && typeof fecha === "string") {
-      juegosFiltrados = juegosFiltrados.filter(j => j.fecha === fecha);
-    }
-
-    //Filtrar por rango de precio
-    const min = precioMin ? parseFloat(precioMin as string) : null;
-    const max = precioMax ? parseFloat(precioMax as string) : null;
-
-    if (min !== null) {
-      juegosFiltrados = juegosFiltrados.filter(j => j.precio >= min);
-    }
-
-    if (max !== null) {
-      juegosFiltrados = juegosFiltrados.filter(j => j.precio <= max);
-    }
-
-    const resultados = juegosFiltrados.map(juego => {
-      const categoriaObj = categorias.find(c => c.categoriaId === juego.categoriaId);
-      const plataforma = plataformas.find(p => p.plataformaId === juego.plataformaId);
-
-      return {
-        ...juego,
-        categoria: categoriaObj?.nombre || "Desconocida",
-        plataforma: plataforma?.nombre || "Desconocida"
-      };
-    });
-
-    res.json(resultados);
-  });
+ 
 
   return router
 }
