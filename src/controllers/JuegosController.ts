@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express"
 import { Juego, juegos, categorias, plataformas } from "../data"
+import { PrismaClient } from "../generated/prisma"
 
 let nextId = juegos.length + 1
 
