@@ -100,42 +100,71 @@ const JuegosController = () => {
 
   // Editar un juego por ID
   router.put("/:id", async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
-    const index = juegos.findIndex(j => j.juegoId === id);
+    const juegoId = parseInt(req.params.id)
 
-    if (index === -1) {
-      res.status(404).json({ error: "Juego no encontrado" });
-      return
-    }
-
-    const { nombre, descripcion, categoria, plataforma, precio, descuento, oferta, ventas, valoracion, imagen, trailer } = req.body;
-    const categoriaEncontrada = categorias.find(c => c.nombre === categoria);
-    const plataformaEncontrada = plataformas.find(p => p.nombre === plataforma);
-
-    if (!categoriaEncontrada || !plataformaEncontrada) {
-      res.status(400).json({ error: "Categoría o plataforma inválida" });
-      return
-    }
-
-    const juegoActualizado: Juego = {
-      ...juegos[index],
+    const {
       nombre,
       descripcion,
-      categoriaId: categoriaEncontrada.categoriaId,
-      plataformaId: plataformaEncontrada.plataformaId,
+      categoria,
+      plataforma,
       precio,
       descuento,
       oferta,
       ventas,
       valoracion,
       imagen,
-      trailer,
-    };
+      trailer
+    } = req.body
 
-    juegos[index] = juegoActualizado;
+    try {
+      const juegoExistente = await prisma.juego.findUnique({
+        where: { juegoId }
+      })
 
-    res.json(juegoActualizado);
-  });
+      if (!juegoExistente) {
+        res.status(404).json({ error: "Juego no encontrado" })
+        return
+      }
+
+      const categoriaEncontrada = await prisma.categoria.findFirst({
+        where: { nombre: categoria }
+      })
+
+      const plataformaEncontrada = await prisma.plataforma.findFirst({
+        where: { nombre: plataforma }
+      })
+
+      if (!categoriaEncontrada || !plataformaEncontrada) {
+        res.status(400).json({
+          error: "Categoría o plataforma inválida"
+        })
+        return
+      }
+
+
+      const juegoActualizado = await prisma.juego.update({
+        where: { juegoId },
+        data: {
+          nombre,
+          descripcion,
+          categoriaId: categoriaEncontrada.categoriaId,
+          plataformaId: plataformaEncontrada.plataformaId,
+          precio,
+          descuento,
+          oferta,
+          ventas,
+          valoracion,
+          imagen,
+          trailer
+        }
+      })
+
+      res.json(juegoActualizado)
+    } catch (error) {
+      console.error("Error al actualizar juego:", error)
+      res.status(500).json({ error: "Error interno al actualizar juego" })
+    }
+  })
 
   // Eliminar un juego por ID
   router.delete("/:id", async (req: Request, res: Response) => {

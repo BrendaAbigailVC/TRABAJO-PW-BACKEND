@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### Editar un juego por ID
-PUT http://localhost:5000/juegos/1 HTTP/1.1
+PUT http://localhost:5000/juegos/7 HTTP/1.1
 Content-Type: application/json
 
 {
