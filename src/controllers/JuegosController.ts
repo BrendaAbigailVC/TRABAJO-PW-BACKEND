@@ -2,6 +2,8 @@ import express, { Request, Response } from "express"
 import { Juego, juegos, categorias, plataformas } from "../data"
 import { PrismaClient } from "../generated/prisma"
 
+const prisma = new PrismaClient()
+
 let nextId = juegos.length + 1
 
 const JuegosController = () => {
@@ -9,11 +11,15 @@ const JuegosController = () => {
 
   // Obtener todos los juegos con nombres de categoría y plataforma
   router.get("/", async (req: Request, res: Response) => {
-    const juegosEnriquecidos = juegos.map(juego => {
-      const categoria = categorias.find(c => c.categoriaId === juego.categoriaId);
-      const plataforma = plataformas.find(p => p.plataformaId === juego.plataformaId);
+    try {
+      const juegos = await prisma.juego.findMany({
+        include: {
+          categoria: true,
+          plataforma: true,
+        },
+      })
 
-      return {
+      const juegosEnriquecidos = juegos.map(juego => ({
         juegoId: juego.juegoId,
         nombre: juego.nombre,
         descripcion: juego.descripcion,
@@ -25,13 +31,16 @@ const JuegosController = () => {
         imagen: juego.imagen,
         trailer: juego.trailer,
         fecha: juego.fecha,
-        categoria: categoria?.nombre || "Desconocida",
-        plataforma: plataforma?.nombre || "Desconocida"
-      };
-    });
+        categoria: juego.categoria?.nombre || "Desconocida",
+        plataforma: juego.plataforma?.nombre || "Desconocida",
+      }))
 
-    res.json(juegosEnriquecidos);
-  });
+      res.json(juegosEnriquecidos)
+    } catch (error) {
+      console.error("Error al obtener juegos:", error)
+      res.status(500).json({ msg: "Error al obtener juegos" })
+    }
+  })
 
   // Agregar un juego nuevo
   router.post("/", async (req: Request, res: Response) => {
