@@ -168,16 +168,22 @@ const JuegosController = () => {
 
   // Eliminar un juego por ID
   router.delete("/:id", async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id)
-    const index = juegos.findIndex(j => j.juegoId === id)
-    if (index === -1) {
-      res.status(404).json({ error: "Juego no encontrado" });
-      return
-    }
+    const id = parseInt(req.params.id);
 
-    const eliminado = juegos.splice(index, 1)[0]
-    res.json(eliminado)
-  })
+    try {
+      const eliminado = await prisma.juego.delete({
+        where: { juegoId: id },
+      });
+
+      res.json(eliminado);
+    } catch (error: any) {
+      if (error.code === 'P2025') {
+        res.status(404).json({ error: "Juego no encontrado" });
+      } else {
+        res.status(500).json({ error: "Error al eliminar el juego" });
+      }
+    }
+  });
 
   //Busqueda de juego mediante nombre
   router.get("/search", (req: Request, res: Response) => {
