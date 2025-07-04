@@ -4,10 +4,11 @@ import cors from "cors"
 import JuegosController from "./controllers/JuegosController"
 import ReviewsController from "./controllers/ReviewController"
 import AuthController from "./controllers/AuthController"
+import dotenv from "dotenv"
+import UsuariosController from "./controllers/UsuariosController"
 
+dotenv.config()
 const app = express()
-
-const PORT = 5000
 
 app.use(bodyParser.json())
 
@@ -16,11 +17,12 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.use(cors())
+const PORT = process.env.PORT
 
 app.use("/juegos", JuegosController())
 app.use("/reviews", ReviewsController())
 app.use("/auth", AuthController())
-
+app.use("/usuarios", UsuariosController()); 
 
 app.listen(PORT, ()=>{
     console.log(`Servidor iniciado en puerto ${PORT}`)

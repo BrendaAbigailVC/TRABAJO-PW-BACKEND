@@ -38,7 +38,7 @@ Content-Type: application/json
 }
 
 ### Eliminar un juego por ID
-DELETE http://localhost:5000/juegos/3 HTTP/1.1
+DELETE http://localhost:5000/juegos/11 HTTP/1.1
 
 ### Buscar juegos por nombre 
 GET http://localhost:5000/juegos/search?nombre=Puz HTTP/1.1
