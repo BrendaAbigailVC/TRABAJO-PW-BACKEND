@@ -1,0 +1,24 @@
+### Obtener todas las plataformas
+GET http://localhost:5000/plataformas
+
+### Obtener una plataforma
+GET http://localhost:5000/plataformas/1
+
+### Crear nueva plataforma
+POST http://localhost:5000/plataformas
+Content-Type: application/json
+
+{
+  "nombre": "Nintendo Switch"
+}
+
+### Actualizar plataforma
+PUT http://localhost:5000/plataformas/1
+Content-Type: application/json
+
+{
+  "nombre": "PlayStation 5"
+}
+
+### Eliminar plataforma
+DELETE http://localhost:5000/plataformas/1

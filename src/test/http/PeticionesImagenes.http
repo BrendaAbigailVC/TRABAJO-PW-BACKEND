@@ -1,0 +1,26 @@
+### Obtener todas las imágenes
+GET http://localhost:5000/imagenes
+
+### Obtener una imagen por ID
+GET http://localhost:5000/imagenes/1
+
+### Crear una nueva imagen
+POST http://localhost:5000/imagenes
+Content-Type: application/json
+
+{
+  "juegoId": 1,
+  "urlImagen": "https://cdn.example.com/juegos/halo_infinite_1.jpg"
+}
+
+### Actualizar una imagen
+PUT http://localhost:5000/imagenes/1
+Content-Type: application/json
+
+{
+  "juegoId": 1,
+  "urlImagen": "https://cdn.example.com/juegos/halo_infinite_2.jpg"
+}
+
+### Eliminar una imagen
+DELETE http://localhost:5000/imagenes/1

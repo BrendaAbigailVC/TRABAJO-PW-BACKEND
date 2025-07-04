@@ -1,0 +1,13 @@
+### Obtener todos los review de un juego
+GET http://localhost:5000/reviews/1 HTTP/1.1
+
+### Crear nuevo review
+POST  http://localhost:5000/reviews HTTP/1.1
+Content-Type: application/json
+
+{
+    "juegoId": 1,
+    "usuarioId": 2,
+    "rating": 5,
+    "comment": "¡Excelente juego!"
+}
