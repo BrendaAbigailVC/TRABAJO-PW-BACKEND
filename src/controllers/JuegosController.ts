@@ -55,7 +55,8 @@ const JuegosController = () => {
       ventas,
       valoracion,
       imagen,
-      trailer
+      trailer,
+      imagenes
     } = req.body
 
     try {
@@ -90,6 +91,15 @@ const JuegosController = () => {
           fecha: new Date()
         }
       })
+
+      if (Array.isArray(imagenes) && imagenes.length > 0) {
+      await prisma.imagenJuego.createMany({
+        data: imagenes.map((url) => ({
+          juegoId: nuevoJuego.juegoId,
+          urlImagen: url
+        }))
+      });
+    }
 
       res.status(201).json({
         id: nuevoJuego.juegoId,
@@ -173,22 +183,48 @@ const JuegosController = () => {
   })
 
   // Eliminar un juego por ID
-  router.delete("/:id", async (req: Request, res: Response) => {
-    const juegoId = parseInt(req.params.id)
-    try {
-      const eliminado = await prisma.juego.delete({ where: { juegoId } })
-      res.json({
-        id: eliminado.juegoId,
-        ...eliminado
-      })
-    } catch (error: any) {
-      if (error.code === "P2025") {
-        res.status(404).json({ error: "Juego no encontrado" })
-      } else {
-        res.status(500).json({ error: "Error al eliminar el juego" })
-      }
+router.delete("/:id", async (req: Request, res: Response) => {
+  const juegoId = parseInt(req.params.id);
+  try {
+    // 1. Eliminar imágenes asociadas
+    await prisma.imagenJuego.deleteMany({
+      where: { juegoId }
+    });
+
+    // 2. Eliminar claves asociadas
+    await prisma.claveJuego.deleteMany({
+      where: { juegoId }
+    });
+
+    // 3. Eliminar reviews asociadas
+    await prisma.review.deleteMany({
+      where: { juegoId }
+    });
+
+    // 4. Eliminar ventas asociadas (si aplica)
+    await prisma.venta.deleteMany({
+      where: { juegoId }
+    });
+
+    // 5. Eliminar el juego
+    const eliminado = await prisma.juego.delete({
+      where: { juegoId }
+    });
+
+    res.json({
+      id: eliminado.juegoId,
+      ...eliminado
+    });
+  } catch (error: any) {
+    if (error.code === "P2025") {
+      res.status(404).json({ error: "Juego no encontrado" });
+    } else {
+      console.error(error);
+      res.status(500).json({ error: "Error al eliminar el juego" });
     }
-  })
+  }
+});
+
 
   //Busqueda de juego mediante nombre
   router.get("/search", async (req: Request, res: Response) => {
@@ -304,6 +340,28 @@ const JuegosController = () => {
       res.status(500).json({ error: "Error al filtrar juegos" });
     }
   });
+
+router.get("/categorias", async (req, res) => {
+  try {
+    const categorias = await prisma.categoria.findMany();
+    res.json(categorias);
+  } catch (error) {
+    console.error("Error al obtener categorías:", error);
+    res.status(500).json({ error: "Error al obtener categorías" });
+  }
+});
+
+router.get("/plataformas", async (req, res) => {
+  try {
+    const plataformas = await prisma.plataforma.findMany();
+    res.json(plataformas);
+  } catch (error) {
+    console.error("Error al obtener plataformas:", error);
+    res.status(500).json({ error: "Error al obtener plataformas" });
+  }
+});
+
+
 
   return router
 }
