@@ -16,7 +16,11 @@ Content-Type: application/json
   "imagen": "nuevo_juego.jpg",
   "trailer": "trailer.mp4",
   "categoria": "RPG",
-  "plataforma": "Nintendo"
+  "plataforma": "Nintendo",
+  "imagenes": [
+    "https://cdn1.com/image1.jpg",
+    "https://cdn1.com/image2.jpg"
+  ]
 }
 
 ### Editar un juego por ID
