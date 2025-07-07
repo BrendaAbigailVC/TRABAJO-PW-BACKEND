@@ -21,7 +21,7 @@ model Usuario {
   username  String
   token     String
   estado    String
-
+  imagen    String?  
   ventas    Venta[]
   reviews   Review[]
 }
