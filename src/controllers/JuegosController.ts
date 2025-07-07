@@ -308,9 +308,8 @@ const JuegosController = () => {
   });
 
   //Filtrar juegos mediante categoria, fecha y rango de precios
-
   router.get("/filtrar", async (req: Request, res: Response) => {
-    const { categoria, fecha, precioMin, precioMax } = req.query;
+    const { plataforma, categoria, fecha, precioMin, precioMax } = req.query;
 
     try {
       // Filtro dinámico
@@ -332,10 +331,37 @@ const JuegosController = () => {
         filtros.categoriaId = categoriaEncontrada.categoriaId;
       }
 
-      // Filtrar por fecha exacta 
-      if (fecha && typeof fecha === "string") {
-        filtros.fecha = new Date(fecha);
+      // Buscar ID de plataforma por nombre
+      if (plataforma && typeof plataforma === "string") {
+        const plataformaEncontrada = await prisma.plataforma.findFirst({
+          where: {
+            nombre: { equals: plataforma, mode: "insensitive" },
+          },
+        });
+
+        if (!plataformaEncontrada) {
+          res.status(404).json({ error: "Plataforma no encontrada." });
+          return
+        }
+
+        filtros.plataformaId = plataformaEncontrada.plataformaId;
       }
+
+      // Filtrar por fecha exacta 
+if (fecha && typeof fecha === "string") {
+  const fechaObj = new Date(fecha);
+  const fechaSinHora = new Date(
+    fechaObj.getFullYear(),
+    fechaObj.getMonth(),
+    fechaObj.getDate()
+  );
+
+  filtros.fecha = {
+    gte: fechaSinHora, 
+  };
+}
+
+
 
       // Filtrar por rango de precio
       if (precioMin || precioMax) {
@@ -405,7 +431,7 @@ const JuegosController = () => {
         include: {
           categoria: true,
           plataforma: true,
-          imagenes: true, 
+          imagenes: true,
         }
       })
 

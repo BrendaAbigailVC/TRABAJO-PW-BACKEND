@@ -53,11 +53,14 @@ DELETE http://localhost:5000/juegos/11 HTTP/1.1
 ### Buscar juegos por nombre 
 GET http://localhost:5000/juegos/search?nombre=Cy HTTP/1.1
 
-### Filtrar juegos por fecha exacta
-GET http://localhost:5000/juegos/filtrar?fecha=2024-10-01 HTTP/1.1
+### Filtrar juegos por fecha
+GET http://localhost:5000/juegos/filtrar?fecha=2027-07-01 HTTP/1.1
 
 ### Filtrar juegos por categoría 
 GET http://localhost:5000/juegos/filtrar?categoria=Aventura HTTP/1.1
+
+### Filtrar juegos por plataforma 
+GET http://localhost:5000/juegos/filtrar?plataforma=PlayStation HTTP/1.1
 
 ### Filtrar juegos mediante rago de precio
 GET http://localhost:5000/juegos/filtrar?precioMin=20&precioMax=60 HTTP/1.1
