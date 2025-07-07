@@ -108,3 +108,13 @@ model Review {
   comment   String
   fecha     DateTime
 }
+
+
+model UsuarioPendiente {
+  usuarioPendienteId Int      @id @default(autoincrement())
+  email              String   @unique
+  password           String
+  username           String
+  codigoVerificacion String
+  fechaRegistro      DateTime @default(now())
+}

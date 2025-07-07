@@ -348,20 +348,18 @@ const JuegosController = () => {
       }
 
       // Filtrar por fecha exacta 
-if (fecha && typeof fecha === "string") {
-  const fechaObj = new Date(fecha);
-  const fechaSinHora = new Date(
-    fechaObj.getFullYear(),
-    fechaObj.getMonth(),
-    fechaObj.getDate()
-  );
+      if (fecha && typeof fecha === "string") {
+        const fechaObj = new Date(fecha);
+        const fechaSinHora = new Date(
+          fechaObj.getFullYear(),
+          fechaObj.getMonth(),
+          fechaObj.getDate()
+        );
 
-  filtros.fecha = {
-    gte: fechaSinHora, 
-  };
-}
-
-
+        filtros.fecha = {
+          gte: fechaSinHora,
+        };
+      }
 
       // Filtrar por rango de precio
       if (precioMin || precioMax) {

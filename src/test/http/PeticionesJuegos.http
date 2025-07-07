@@ -1,3 +1,32 @@
+### Registrar usuario (envía código por correo)
+POST http://localhost:5000/api/usuarios/registrar
+Content-Type: application/json
+
+{
+  "email": "prueba@email.com",
+  "password": "123456",
+  "username": "usuarioPrueba"
+}
+
+### Verificar código recibido (reemplaza el código real aquí)
+POST http://localhost:5000/api/usuarios/verificar
+Content-Type: application/json
+
+{
+  "email": "prueba@email.com",
+  "codigo": "837714"
+}
+
+### Login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@email.com",
+  "password": "123456"
+}
+
+
 ### Obtener todos los juegos
 GET http://localhost:5000/juegos HTTP/1.1
 
