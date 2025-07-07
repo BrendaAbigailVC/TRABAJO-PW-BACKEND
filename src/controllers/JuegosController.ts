@@ -126,7 +126,8 @@ const JuegosController = () => {
       ventas,
       valoracion,
       imagen,
-      trailer
+      trailer,
+      imagenes
     } = req.body
 
     try {
@@ -169,13 +170,47 @@ const JuegosController = () => {
           valoracion,
           imagen,
           trailer
+        },
+        include: {
+          categoria: true,
+          plataforma: true,
+          imagenes: true,
         }
       })
 
+      if (Array.isArray(imagenes)) {
+        // Eliminar imágenes actuales
+        await prisma.imagenJuego.deleteMany({ where: { juegoId } });
+
+        // Insertar nuevas imágenes
+        if (imagenes.length > 0) {
+          await prisma.imagenJuego.createMany({
+            data: imagenes.map((url) => ({
+              juegoId,
+              urlImagen: url,
+            })),
+          });
+        }
+      }
+
       res.json({
         id: juegoActualizado.juegoId,
-        ...juegoActualizado
-      })
+        nombre: juegoActualizado.nombre,
+        descripcion: juegoActualizado.descripcion,
+        categoria: juegoActualizado.categoria.nombre,
+        plataforma: juegoActualizado.plataforma.nombre,
+        precio: juegoActualizado.precio,
+        descuento: juegoActualizado.descuento,
+        oferta: juegoActualizado.oferta,
+        ventas: juegoActualizado.ventas,
+        valoracion: juegoActualizado.valoracion,
+        imagen: juegoActualizado.imagen,
+        trailer: juegoActualizado.trailer,
+        fecha: juegoActualizado.fecha,
+        imagenes: juegoActualizado.imagenes.map(i => i.urlImagen),
+        reviews: []
+      });
+
     } catch (error) {
       console.error("Error al actualizar juego:", error)
       res.status(500).json({ error: "Error interno al actualizar juego" })
@@ -224,7 +259,6 @@ const JuegosController = () => {
       }
     }
   });
-
 
   //Busqueda de juego mediante nombre
   router.get("/search", async (req: Request, res: Response) => {
@@ -361,7 +395,48 @@ const JuegosController = () => {
     }
   });
 
+  // Obtener juego por ID con imágenes extra
+  router.get("/:id", async (req: Request, res: Response) => {
+    const juegoId = parseInt(req.params.id)
 
+    try {
+      const juego = await prisma.juego.findUnique({
+        where: { juegoId },
+        include: {
+          categoria: true,
+          plataforma: true,
+          imagenes: true, 
+        }
+      })
+
+      if (!juego) {
+        res.status(404).json({ error: "Juego no encontrado" })
+        return
+      }
+
+      const juegoFormateado = {
+        id: juego.juegoId,
+        nombre: juego.nombre,
+        descripcion: juego.descripcion,
+        precio: juego.precio,
+        descuento: juego.descuento,
+        oferta: juego.oferta,
+        ventas: juego.ventas,
+        valoracion: juego.valoracion,
+        imagen: juego.imagen,
+        trailer: juego.trailer,
+        fecha: juego.fecha,
+        categoria: juego.categoria?.nombre || "Desconocida",
+        plataforma: juego.plataforma?.nombre || "Desconocida",
+        imagenes: juego.imagenes.map((img) => img.urlImagen),
+      }
+
+      res.json(juegoFormateado)
+    } catch (error) {
+      console.error("Error al obtener juego por ID:", error)
+      res.status(500).json({ error: "Error interno al obtener juego" })
+    }
+  })
 
   return router
 }
