@@ -1,0 +1,18 @@
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjUsImVtYWlsIjoiYnJlbmRAZ21haWwuY29tIiwiaWF0IjoxNzUyMDA4MDU3LCJleHAiOjE3NTIwMTUyNTd9.cjJd-JbRsdfnZ03wGOIe38G7euvzUfw2Yo6j7Mv7AbM
+
+### Obtener perfil
+GET http://localhost:5000/usuarios/perfil
+Authorization: Bearer {{token}}
+
+### Editar perfil
+PATCH  http://localhost:5000/usuarios/perfil
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "username": "NuevoNombreE"
+}
+
+
+
+

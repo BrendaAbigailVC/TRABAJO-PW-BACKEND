@@ -1,35 +1,49 @@
+POST http://localhost:5000/auth/registrar
+Content-Type: application/json
+
+{
+  "email": "prueba2@email.com",
+  "password": "123456",
+  "username": "usuarioPrueba"
+}
+
+### Verificar código recibido
+POST http://localhost:5000/auth/verificar
+Content-Type: application/json
+
+{
+  "email": "prueba2@email.com",
+  "codigo": "742529"
+}
 
 ### Login
 POST http://localhost:5000/auth/login
 Content-Type: application/json
 
 {
-  "email": "alice@example.com",
-  "password": "123"
+  "email": "prueba2@email.com",
+  "password": "123456"
 }
 
-### Usuarios
-GET http://localhost:5000/usuarios HTTP/1.1
-
-### Obtener un usuario
-GET http://localhost:5000/usuarios/1 HTTP/1.1
 
 
-### Crear usuario
-POST http://localhost:5000/usuarios HTTP/1.1
+### Crear admin
+POST http://localhost:5000/auth/registrar
 Content-Type: application/json
 
 {
-  "email": "ali@example.com",
-  "password": "123",
-  "username": "ali",
-  "token": "abc123",
-  "estado": "activo"
+  "email": "admin@admin.com",
+  "password": "admin123",
+  "username": "Admin",
+  "rol": "admin"
 }
 
+### Verificar código
+POST http://localhost:5000/auth/verificar
+Content-Type: application/json
 
-### Eliminar un usuario
-DELETE http://localhost:5000/usuarios/2 HTTP/1.1
-
-
-
+{
+  "email": "admin@admin.com",
+  "codigo": "779673",
+  "rol": "admin"
+}

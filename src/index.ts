@@ -22,10 +22,8 @@ const PORT = process.env.PORT
 
 app.use("/juegos", JuegosController())
 app.use("/reviews", ReviewsController())
-app.use("/api/auth", AuthController())
+app.use("/auth", AuthController())
 app.use("/usuarios", UsuariosController()); 
-app.use('/api/usuarios', RegisterController());
-
 
 app.listen(PORT, ()=>{
     console.log(`Servidor iniciado en puerto ${PORT}`)
