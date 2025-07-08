@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nombre": "Resident Evil",
+    "categoria": "Terror",
+    "precio": 59.99,
+    "descuento": 10,
+    "descripcion": "Juego de supervivencia y horror.",
+    "fecha": "2023-03-12"
+  },
+  {
+    "id": 2,
+    "nombre": "The Witcher 3",
+    "categoria": "RPG",
+    "precio": 39.99,
+    "descuento": 20,
+    "descripcion": "RPG de mundo abierto con historias profundas.",
+    "fecha": "2015-05-19"
+  },
+  {
+    "id": 3,
+    "nombre": "God of War",
+    "categoria": "Acción",
+    "precio": 49.99,
+    "descuento": 15,
+    "descripcion": "Aventura épica basada en mitología nórdica.",
+    "fecha": "2018-04-20"
+  },
+  {
+    "id": 4,
+    "nombre": "Hollow Knight",
+    "categoria": "Aventura",
+    "precio": 14.99,
+    "descuento": 5,
+    "descripcion": "Juego de plataformas y exploración.",
+    "fecha": "2017-02-24"
+  }
+]

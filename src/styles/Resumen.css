@@ -1,0 +1,98 @@
+.resumen-section {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.resumen-section h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.resumen-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.resumen-info {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.resumen-info h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.resumen-info p {
+  margin: 0.5rem 0;
+  color: #495057;
+}
+
+.claves-container {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.claves-container h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.claves-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.clave-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.juego-nombre {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.clave {
+  font-family: monospace;
+  color: #28a745;
+  background: #e8f5e9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.resumen-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+} 
