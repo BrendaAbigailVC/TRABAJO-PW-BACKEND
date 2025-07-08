@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const prisma = new PrismaClient();
 import { verificarTokenMiddleware } from "../utils/verificarTokenMiddleware";
+import type { } from 'express';
+
 
 const AuthController = () => {
   const router = express.Router();
@@ -54,6 +56,8 @@ const AuthController = () => {
         username: usuario.username,
         email: usuario.email,
         estado: usuario.estado,
+        imagen: usuario.imagen,
+        rol: usuario.rol,
       },
 
     });
@@ -61,16 +65,19 @@ const AuthController = () => {
 
 
   router.get('/perfil', verificarTokenMiddleware, async (req: Request, res: Response) => {
-    const usuarioId = (req as Request & { usuarioId: number }).usuarioId;
+    const id = (req as Request & { usuarioId?: number }).usuarioId;
 
-    if (!usuarioId) {
+
+
+
+    if (!id) {
       res.status(401).json({ error: 'Usuario no autenticado' });
       return
     }
 
     try {
       const usuario = await prisma.usuario.findUnique({
-        where: { usuarioId },
+        where: { usuarioId: id },
         select: {
           usuarioId: true,
           username: true,
@@ -86,10 +93,10 @@ const AuthController = () => {
 
       res.json(usuario);
     } catch (error) {
-      res.status(500).json({ error: 'Error al obtener el perfil', details: error });
+      console.error("Error al obtener el perfil:", error);
+      res.status(500).json({ error: 'Error al obtener el perfil' });
     }
   });
-
 
 
   return router;

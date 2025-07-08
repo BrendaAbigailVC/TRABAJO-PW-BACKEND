@@ -15,7 +15,7 @@ const RegisterController = () => {
 
     //  Registro de usuario pendiente
     router.post('/registrar', async (req: Request, res: Response) => {
-        const { email, password, username } = req.body;
+        const { email, password, username, rol } = req.body;
 
         const existente = await prisma.usuario.findUnique({ where: { email } });
         if (existente) {
@@ -42,7 +42,7 @@ const RegisterController = () => {
 
     // Verificación de código
     router.post('/verificar', async (req: Request, res: Response) => {
-        const { email, codigo } = req.body;
+        const { email, codigo, rol } = req.body;
 
         const pendiente = await prisma.usuarioPendiente.findUnique({ where: { email } });
         if (!pendiente) {
@@ -60,8 +60,9 @@ const RegisterController = () => {
                 email: pendiente.email,
                 password: pendiente.password,
                 username: pendiente.username,
-                token: '', 
-                estado: 'activo'
+                token: '',
+                estado: 'activo',
+                rol: req.body.rol === 'admin' ? 'admin' : 'user',
             },
         });
 
@@ -76,7 +77,19 @@ const RegisterController = () => {
             data: { token },
         });
 
-        res.json({ mensaje: "Cuenta verificada", token, usuario: nuevoUsuario });
+        res.json({
+            mensaje: "Cuenta verificada",
+            token,
+            usuario: {
+                usuarioId: nuevoUsuario.usuarioId,
+                email: nuevoUsuario.email,
+                username: nuevoUsuario.username,
+                estado: nuevoUsuario.estado,
+                rol: nuevoUsuario.rol,
+                imagen: nuevoUsuario.imagen || null,
+            }
+        });
+        
         return
     });
 

@@ -21,7 +21,8 @@ model Usuario {
   username  String
   token     String
   estado    String
-  imagen    String?  
+  imagen    String?
+  rol      String @default("user")  
   ventas    Venta[]
   reviews   Review[]
 }

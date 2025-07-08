@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express"
 import { Juego, juegos, categorias, plataformas } from "../data"
 import { PrismaClient } from "../generated/prisma"
+import { verificarTokenMiddleware } from "../utils/verificarTokenMiddleware";
 
 const prisma = new PrismaClient()
 
@@ -43,7 +44,7 @@ const JuegosController = () => {
   })
 
   // Agregar un juego nuevo
-  router.post("/", async (req: Request, res: Response) => {
+  router.post("/", verificarTokenMiddleware,  async (req: Request, res: Response) => {
     const {
       nombre,
       descripcion,
@@ -112,7 +113,7 @@ const JuegosController = () => {
   })
 
   // Editar un juego por ID
-  router.put("/:id", async (req: Request, res: Response) => {
+  router.put("/:id", verificarTokenMiddleware, async (req: Request, res: Response) => {
     const juegoId = parseInt(req.params.id)
 
     const {
@@ -218,7 +219,7 @@ const JuegosController = () => {
   })
 
   // Eliminar un juego por ID
-  router.delete("/:id", async (req: Request, res: Response) => {
+  router.delete("/:id", verificarTokenMiddleware, async (req: Request, res: Response) => {
     const juegoId = parseInt(req.params.id);
     try {
       // Eliminar imágenes asociadas
