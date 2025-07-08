@@ -4,10 +4,8 @@ import { PrismaClient } from '../generated/prisma';
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const prisma = new PrismaClient();
-import { verificarTokenMiddleware } from "../utils/verificarTokenMiddleware";
 import type { } from 'express';
 import { enviarCodigo } from '../utils/enviarCorreo';
-
 
 const AuthController = () => {
   const router = express.Router();
@@ -45,7 +43,6 @@ const AuthController = () => {
       { expiresIn: "2h" }
     );
 
-    // Puedes guardar el token si quieres persistirlo en la base de datos
     await prisma.usuario.update({
       where: { usuarioId: usuario.usuarioId },
       data: { token }
@@ -66,8 +63,8 @@ const AuthController = () => {
     });
   });
 
-  //ENDPOINTS PARA REGISTRO
 
+  //ENDPOINTS PARA REGISTRO
   function generarCodigo(): string {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
