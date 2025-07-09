@@ -1,0 +1,128 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  usuarioId Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  username  String
+  token     String
+  estado    String
+  imagen    String?
+  rol      String @default("user")  
+  ventas    Venta[]
+  reviews   Review[]
+}
+
+model Noticia {
+  noticiaId Int     @id @default(autoincrement())
+  titulo    String
+  texto     String
+  activo    Boolean
+}
+
+
+model Venta {
+  ventaId     Int      @id @default(autoincrement())
+  fecha       DateTime
+  usuario     Usuario  @relation(fields: [usuarioId], references: [usuarioId])
+  usuarioId   Int
+  juego       Juego    @relation(fields: [juegoId], references: [juegoId])
+  juegoId     Int
+  montoPagado Float
+  claves      ClaveJuego[]
+}
+
+model Juego {
+  juegoId     Int          @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  categoria   Categoria    @relation(fields: [categoriaId], references: [categoriaId])
+  categoriaId Int
+  plataforma  Plataforma   @relation(fields: [plataformaId], references: [plataformaId])
+  plataformaId Int
+  precio      Float
+  descuento   Float
+  oferta      Boolean
+  ventas      Int
+  valoracion  Float
+  imagen      String
+  trailer     String
+  fecha       DateTime
+
+  ventasJuego Venta[]
+  clavesVendidas ClaveJuego[]   @relation("JuegoAClavesVendidas")
+  clavesDisponibles ClaveDisponible[] @relation("JuegoAClavesDisponibles")
+  imagenes    ImagenJuego[]
+  reviews     Review[]
+}
+
+model Categoria {
+  categoriaId Int     @id @default(autoincrement())
+  nombre      String
+  juegos      Juego[]
+}
+
+model Plataforma {
+  plataformaId Int     @id @default(autoincrement())
+  nombre       String
+  juegos       Juego[]
+}
+
+
+model ClaveJuego {
+  claveJuegoId Int    @id @default(autoincrement())
+  juegoId      Int
+  juego        Juego  @relation("JuegoAClavesVendidas", fields: [juegoId], references: [juegoId])
+  ventaId      Int  
+  venta        Venta  @relation(fields: [ventaId], references: [ventaId])
+  codigoClave  String
+}
+
+model ClaveDisponible {
+  claveDisponibleId Int    @id @default(autoincrement())
+  juegoId           Int
+  juego             Juego  @relation("JuegoAClavesDisponibles", fields: [juegoId], references: [juegoId])
+  codigoClave       String @unique
+}
+
+model ImagenJuego {
+  imagenJuegoId Int    @id @default(autoincrement())
+  juego         Juego  @relation(fields: [juegoId], references: [juegoId])
+  juegoId       Int
+  urlImagen     String
+}
+
+model Review {
+  reviewId  Int      @id @default(autoincrement())
+  juego     Juego    @relation(fields: [juegoId], references: [juegoId])
+  juegoId   Int
+  usuario   Usuario  @relation(fields: [usuarioId], references: [usuarioId])
+  usuarioId Int
+  rating    Int
+  comment   String
+  fecha     DateTime
+}
+
+
+model UsuarioPendiente {
+  usuarioPendienteId Int      @id @default(autoincrement())
+  email              String   @unique
+  password           String
+  username           String
+  codigoVerificacion String
+  fechaRegistro      DateTime @default(now())
+}
