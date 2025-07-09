@@ -6,6 +6,7 @@ import ReviewsController from "./controllers/ReviewController"
 import AuthController from "./controllers/AuthController"
 import dotenv from "dotenv"
 import UsuariosController from "./controllers/UsuariosController"
+import VentasController from "./controllers/VentasController"
 
 dotenv.config()
 const app = express()
@@ -23,6 +24,7 @@ app.use("/juegos", JuegosController())
 app.use("/reviews", ReviewsController())
 app.use("/auth", AuthController())
 app.use("/usuarios", UsuariosController()); 
+app.use("/ventas", VentasController()); 
 
 app.listen(PORT, ()=>{
     console.log(`Servidor iniciado en puerto ${PORT}`)

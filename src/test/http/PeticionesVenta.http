@@ -1,0 +1,13 @@
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjksImVtYWlsIjoicHJ1ZWJhMkBlbWFpbC5jb20iLCJpYXQiOjE3NTIwMTg5MzYsImV4cCI6MTc1MjAyNjEzNn0.PvBbQ0fHgZUcLP-g8E7GnCMDMmlKBhoAgOTJetzgPZg
+
+### Compra de varios juegos (carrito)
+POST http://localhost:5000/ventas/comprar HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "juegos": [
+    { "juegoId": 29, "cantidad": 2 },
+    { "juegoId": 36, "cantidad": 1 }
+  ]
+}

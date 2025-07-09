@@ -5,8 +5,6 @@ import { verificarTokenMiddleware } from "../utils/verificarTokenMiddleware";
 
 const prisma = new PrismaClient()
 
-let nextId = juegos.length + 1
-
 const JuegosController = () => {
   const router = express.Router()
 

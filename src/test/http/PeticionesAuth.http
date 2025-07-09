@@ -2,7 +2,7 @@ POST http://localhost:5000/auth/registrar
 Content-Type: application/json
 
 {
-  "email": "prueba2@email.com",
+  "email": "brenda949313@gmail.com",
   "password": "123456",
   "username": "usuarioPrueba"
 }
@@ -12,8 +12,8 @@ POST http://localhost:5000/auth/verificar
 Content-Type: application/json
 
 {
-  "email": "prueba2@email.com",
-  "codigo": "742529"
+  "email": "brenda949313@gmail.com",
+  "codigo": "732626"
 }
 
 ### Login
