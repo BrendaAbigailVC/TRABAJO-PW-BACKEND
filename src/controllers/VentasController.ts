@@ -2,6 +2,8 @@ import express, { Request, Response } from "express";
 import { PrismaClient } from "../generated/prisma";
 import { verificarTokenMiddleware } from "../utils/verificarTokenMiddleware";
 import type { } from 'express';
+import { enviarCorreoCompra } from '../utils/enviarCorreo';
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
@@ -23,20 +25,24 @@ const VentasController = () => {
                 return
             }
 
-            const ventasRealizadas: any[] = [];
+            const ventasRealizadas: {
+                ventaId: number;
+                fecha: Date;
+                montoPagado: number;
+                juego: { nombre: string };
+                claves: { codigoClave: string }[];
+            }[] = [];
 
-         
             await prisma.$transaction(async (tx) => {
                 for (const item of juegos) {
                     const { juegoId, cantidad } = item;
 
-                  
                     if (!juegoId || typeof cantidad !== "number" || cantidad <= 0) continue;
 
                     const juego = await tx.juego.findUnique({ where: { juegoId } });
                     if (!juego) continue;
 
-                  
+
                     let descuento = juego.descuento;
                     if (descuento > 1) descuento = descuento / 100;
 
@@ -84,8 +90,31 @@ const VentasController = () => {
 
             const juegosRespuesta = ventasRealizadas.map((venta) => ({
                 nombre: venta.juego.nombre,
-                claves: venta.claves.map((c: any) => c.codigoClave),
+                claves: venta.claves.map((c) => c.codigoClave)
             }));
+
+            const usuario = await prisma.usuario.findUnique({ where: { usuarioId } });
+            if (usuario?.email) {
+                const juegosHtml = juegosRespuesta
+                    .map(
+                        (j) => `
+            <h3>${j.nombre}</h3>
+            <ul>${j.claves.map((clave) => `<li>${clave}</li>`).join("")}</ul>`
+                    )
+                    .join("");
+
+                const html = `
+          <h2>¡Gracias por tu compra en GameStore!</h2>
+          <p><strong>Orden:</strong> ${orden}</p>
+          <p><strong>Fecha:</strong> ${new Date(fecha).toLocaleString()}</p>
+          <p><strong>Total:</strong> $${total.toFixed(2)}</p>
+          <h2>Tus claves:</h2>
+          ${juegosHtml}
+        `;
+
+                await enviarCorreoCompra(usuario.email, "Confirmación de compra - GameStore", html);
+            }
+
 
             res.status(201).json({
                 message: "Compra completada.",
@@ -95,10 +124,14 @@ const VentasController = () => {
                 juegos: juegosRespuesta,
             });
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error en la compra:", error);
-            res.status(500).json({ message: "Error en el proceso de compra." });
+            res.status(500).json({
+                message: "Error en el proceso de compra.",
+                error: error.message || error
+            });
         }
+
     });
 
     return router;

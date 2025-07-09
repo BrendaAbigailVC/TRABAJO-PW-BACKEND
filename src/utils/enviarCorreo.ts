@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 // Envío de código de verificación (registro o recuperación)
 export const enviarCodigo = async (email: string, codigo: string) => {
   await transporter.sendMail({
-    from: '"Mi App de Juegos" <30250045@aloe.ulima.edu.pe >',
+    from: '"GameStore" <30250045@aloe.ulima.edu.pe>',
     to: email,
     subject: "Código de verificación",
     text: `Tu código de verificación es: ${codigo}`,
@@ -22,7 +22,7 @@ export const enviarCodigo = async (email: string, codigo: string) => {
 // Envío de detalles de compra
 export async function enviarCorreoCompra(destino: string, asunto: string, detallesHtml: string) {
   await transporter.sendMail({
-    from: `"GameStore" <${process.env.SMTP_USER}>`,
+    from: '"GameStore" <30250045@aloe.ulima.edu.pe>',
     to: destino,
     subject: asunto,
     html: detallesHtml,

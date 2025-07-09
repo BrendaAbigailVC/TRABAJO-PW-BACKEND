@@ -1,4 +1,4 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjksImVtYWlsIjoicHJ1ZWJhMkBlbWFpbC5jb20iLCJpYXQiOjE3NTIwMTg5MzYsImV4cCI6MTc1MjAyNjEzNn0.PvBbQ0fHgZUcLP-g8E7GnCMDMmlKBhoAgOTJetzgPZg
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEwLCJlbWFpbCI6ImJyZW5kYTk0OTMxM0BnbWFpbC5jb20iLCJpYXQiOjE3NTIwMjEwNTIsImV4cCI6MTc1MjAyODI1Mn0.b80TCClHiaQtyATZUhkfcB6kvwuBARRjb5dgzWWZ6uU
 
 ### Compra de varios juegos (carrito)
 POST http://localhost:5000/ventas/comprar HTTP/1.1
