@@ -47,3 +47,35 @@ Content-Type: application/json
   "codigo": "779673",
   "rol": "admin"
 }
+
+### Login
+POST http://localhost:5000/auth/login
+Content-Type: application/json
+
+{
+  "email": "alice@example.com",
+  "password": "123"
+}
+
+### Usuarios
+GET http://localhost:5000/usuarios HTTP/1.1
+
+### Obtener un usuario
+GET http://localhost:5000/usuarios/1 HTTP/1.1
+
+
+### Crear usuario
+POST http://localhost:5000/usuarios HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "ali@example.com",
+  "password": "123",
+  "username": "ali",
+  "token": "abc123",
+  "estado": "activo"
+}
+
+
+### Eliminar un usuario
+DELETE http://localhost:5000/usuarios/2 HTTP/1.1

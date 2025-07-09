@@ -76,3 +76,111 @@ GET http://localhost:5000/juegos/categorias HTTP/1.1
 
 ###Obtener plataformas juegos
 GET http://localhost:5000/juegos/plataformas HTTP/1.1
+
+
+### Registrar usuario (envía código por correo)
+POST http://localhost:5000/api/usuarios/registrar
+Content-Type: application/json
+
+{
+  "email": "prueba@email.com",
+  "password": "123456",
+  "username": "usuarioPrueba"
+}
+
+### Verificar código recibido (reemplaza el código real aquí)
+POST http://localhost:5000/api/usuarios/verificar
+Content-Type: application/json
+
+{
+  "email": "prueba@email.com",
+  "codigo": "837714"
+}
+
+### Login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prueba@email.com",
+  "password": "123456"
+}
+
+###
+GET http://localhost:5000/usuarios/perfil
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjQsImVtYWlsIjoicHJ1ZWJhQGVtYWlsLmNvbSIsImlhdCI6MTc1MTg3MzYzMywiZXhwIjoxNzUxODgwODMzfQ.EWNWOKEJsAfd-xHP2hGeQ0JrFz-N1B0OIorXtoyfl5E
+
+
+### Obtener todos los juegos
+GET http://localhost:5000/juegos HTTP/1.1
+
+### Obtener juego por id
+GET http://localhost:5000/juegos/41 HTTP/1.1
+
+### Agregar un nuevo juego
+POST https://trabajo-pw-backend.onrender.com/juegos HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo Juego",
+  "descripcion": "Juego de prueba",
+  "precio": 49.99,
+  "descuento": 5,
+  "oferta": true,
+  "ventas": 0,
+  "valoracion": 0,
+  "imagen": "nuevo_juego.jpg",
+  "trailer": "trailer.mp4",
+  "categoria": "RPG",
+  "plataforma": "Nintendo",
+  "imagenes": [
+    "https://cdn1.com/image1.jpg",
+    "https://cdn1.com/image2.jpg"
+  ]
+}
+
+### Editar un juego por ID
+PUT http://localhost:5000/juegos/41 HTTP/1.1
+Content-Type: application/json
+
+{
+  "nombre": "CyberQuest Reloaded",
+  "descripcion": "Actualización con nuevos niveles",
+  "categoria": "RPG",
+  "plataforma": "Nintendo",
+  "precio": 49.99,
+  "descuento": 5,
+  "oferta": true,
+  "ventas": 200,
+  "valoracion": 4.7,
+  "imagen": "nuevo.jpg",
+  "trailer": "nuevo_trailer.mp4",
+  "imagenes": [
+    "https://cdn1.com/image1edit.jpg"
+  ]
+}
+
+### Eliminar un juego por ID
+DELETE http://localhost:5000/juegos/11 HTTP/1.1
+
+### Buscar juegos por nombre 
+GET http://localhost:5000/juegos/search?nombre=Cy HTTP/1.1
+
+### Filtrar juegos por fecha
+GET http://localhost:5000/juegos/filtrar?fecha=2027-07-01 HTTP/1.1
+
+### Filtrar juegos por categoría 
+GET http://localhost:5000/juegos/filtrar?categoria=Aventura HTTP/1.1
+
+### Filtrar juegos por plataforma 
+GET http://localhost:5000/juegos/filtrar?plataforma=PlayStation HTTP/1.1
+
+### Filtrar juegos mediante rago de precio
+GET http://localhost:5000/juegos/filtrar?precioMin=20&precioMax=60 HTTP/1.1
+
+###Obtener categorias juegos
+GET http://localhost:5000/juegos/categorias HTTP/1.1
+
+
+###Obtener plataformas juegos
+GET http://localhost:5000/juegos/plataformas HTTP/1.1
