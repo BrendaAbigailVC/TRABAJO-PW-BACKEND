@@ -153,6 +153,7 @@ const AuthController = () => {
 };
 
 export default AuthController;
+<<<<<<< HEAD
 
 import express, { Request, Response } from "express";
 import { usuarios } from "../data";
@@ -252,3 +253,5 @@ const AuthController = () => {
 };
 
 export default AuthController;
+=======
+>>>>>>> Fabrizio_Final

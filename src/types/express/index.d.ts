@@ -1,7 +1,9 @@
-import 'express';
+import { Request } from 'express';
 
-declare module 'express-serve-static-core' {
-  interface Request {
+declare module 'express' {
+  export interface Request {
     usuarioId?: number;
   }
+  console.log("Express types loaded");
+
 }

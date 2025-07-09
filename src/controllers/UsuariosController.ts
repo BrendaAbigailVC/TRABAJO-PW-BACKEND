@@ -147,6 +147,7 @@ const UsuariosController = () => {
 }
 
 export default UsuariosController
+<<<<<<< HEAD
 
 import express, { Request, Response } from "express"
 import { PrismaClient } from "../generated/prisma"
@@ -236,3 +237,5 @@ const UsuariosController = () => {
 }
 
 export default UsuariosController
+=======
+>>>>>>> Fabrizio_Final

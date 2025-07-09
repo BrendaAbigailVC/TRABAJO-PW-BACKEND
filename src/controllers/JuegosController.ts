@@ -465,6 +465,7 @@ const JuegosController = () => {
 }
 
 export default JuegosController
+<<<<<<< HEAD
 
 import express, { Request, Response } from "express"
 import { Juego, juegos, categorias, plataformas } from "../data"
@@ -934,3 +935,5 @@ const JuegosController = () => {
 }
 
 export default JuegosController
+=======
+>>>>>>> Fabrizio_Final

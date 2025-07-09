@@ -126,6 +126,7 @@ model UsuarioPendiente {
   codigoVerificacion String
   fechaRegistro      DateTime @default(now())
 }
+<<<<<<< HEAD
 
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
@@ -247,3 +248,5 @@ model UsuarioPendiente {
   codigoVerificacion String
   fechaRegistro      DateTime @default(now())
 }
+=======
+>>>>>>> Fabrizio_Final
