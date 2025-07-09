@@ -64,7 +64,8 @@ model Juego {
   fecha       DateTime
 
   ventasJuego Venta[]
-  claves      ClaveJuego[]
+  clavesVendidas ClaveJuego[]   @relation("JuegoAClavesVendidas")
+  clavesDisponibles ClaveDisponible[] @relation("JuegoAClavesDisponibles")
   imagenes    ImagenJuego[]
   reviews     Review[]
 }
@@ -85,12 +86,18 @@ model Plataforma {
 model ClaveJuego {
   claveJuegoId Int    @id @default(autoincrement())
   juegoId      Int
-  juego        Juego  @relation(fields: [juegoId], references: [juegoId])
+  juego        Juego  @relation("JuegoAClavesVendidas", fields: [juegoId], references: [juegoId])
   ventaId      Int  
   venta        Venta  @relation(fields: [ventaId], references: [ventaId])
   codigoClave  String
 }
 
+model ClaveDisponible {
+  claveDisponibleId Int    @id @default(autoincrement())
+  juegoId           Int
+  juego             Juego  @relation("JuegoAClavesDisponibles", fields: [juegoId], references: [juegoId])
+  codigoClave       String @unique
+}
 
 model ImagenJuego {
   imagenJuegoId Int    @id @default(autoincrement())

@@ -1,4 +1,4 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEwLCJlbWFpbCI6ImJyZW5kYTk0OTMxM0BnbWFpbC5jb20iLCJpYXQiOjE3NTIwMjEwNTIsImV4cCI6MTc1MjAyODI1Mn0.b80TCClHiaQtyATZUhkfcB6kvwuBARRjb5dgzWWZ6uU
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEwLCJlbWFpbCI6ImJyZW5kYTk0OTMxM0BnbWFpbC5jb20iLCJpYXQiOjE3NTIwMjYyMzYsImV4cCI6MTc1MjAzMzQzNn0.yLlB1nb-_FMg_ZQtT4W04sTSlQPaiBy4S2zOB1FWbVw
 
 ### Compra de varios juegos (carrito)
 POST http://localhost:5000/ventas/comprar HTTP/1.1
@@ -11,3 +11,27 @@ Authorization: Bearer {{token}}
     { "juegoId": 36, "cantidad": 1 }
   ]
 }
+
+
+### Generar claves
+POST http://localhost:5000/claves/generar HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "juegoId": 29,
+  "cantidad": 3
+}
+
+
+### Obtener claves dispoibles 
+GET http://localhost:5000/claves/disponibles/45 HTTP/1.1
+Authorization: Bearer {{token}}
+
+
+
+### Eliminar clave 
+DELETE  http://localhost:5000/claves/disponibles/2 HTTP/1.1
+Authorization: Bearer {{token}}
+
+
