@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### Login
-POST http://localhost:5000/auth/login
+POST https://trabajo-pw-backend.onrender.com/auth/login
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 
 
 ### Crear admin
-POST http://localhost:5000/auth/registrar
+POST https://trabajo-pw-backend.onrender.com/auth/registrar
 Content-Type: application/json
 
 {
