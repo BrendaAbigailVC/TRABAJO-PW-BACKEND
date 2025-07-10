@@ -76,3 +76,9 @@ GET http://localhost:5000/juegos/categorias HTTP/1.1
 
 ###Obtener plataformas juegos
 GET http://localhost:5000/juegos/plataformas HTTP/1.1
+
+
+### Obtener mas valorado
+GET http://localhost:5000/juegos/api/juegos/mas-valorados
+
+

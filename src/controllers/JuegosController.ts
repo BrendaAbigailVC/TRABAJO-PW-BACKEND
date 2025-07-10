@@ -443,6 +443,43 @@ const JuegosController = () => {
     }
   })
 
+// Obtener juegos ordenados por valoración descendente
+router.get("/api/juegos/mas-valorados", async (req: Request, res: Response) => {
+  try {
+    const juegos = await prisma.juego.findMany({
+      orderBy: {
+        valoracion: 'desc',
+      },
+      include: {
+        categoria: true,
+        plataforma: true,
+      },
+    });
+
+    const juegosEnriquecidos = juegos.map(juego => ({
+      id: juego.juegoId,
+      nombre: juego.nombre,
+      descripcion: juego.descripcion,
+      precio: juego.precio,
+      descuento: juego.descuento,
+      oferta: juego.oferta,
+      ventas: juego.ventas,
+      valoracion: juego.valoracion,
+      imagen: juego.imagen,
+      trailer: juego.trailer,
+      fecha: juego.fecha,
+      categoria: juego.categoria?.nombre || "Desconocida",
+      plataforma: juego.plataforma?.nombre || "Desconocida",
+    }));
+
+    res.json(juegosEnriquecidos);
+  } catch (error) {
+    console.error("Error al obtener juegos más valorados:", error);
+    res.status(500).json({ msg: "Error al obtener juegos más valorados" });
+  }
+});
+
+
   return router
 }
 
