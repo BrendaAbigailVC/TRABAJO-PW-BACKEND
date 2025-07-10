@@ -241,7 +241,6 @@ const JuegosController = () => {
     }
   });
 
-
   //Busqueda de juego mediante nombre
   router.get("/search", async (req: Request, res: Response) => {
     const { nombre } = req.query;
