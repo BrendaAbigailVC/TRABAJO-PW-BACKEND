@@ -15,13 +15,13 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "nombre": "Nuevo Juego",
+  "nombre": "Run",
   "descripcion": "Juego de prueba",
   "precio": 49.99,
   "descuento": 5,
   "oferta": true,
   "ventas": 0,
-  "valoracion": 0,
+  "valoracion": 200,
   "imagen": "nuevo_juego.jpg",
   "trailer": "trailer.mp4",
   "categoria": "RPG",
