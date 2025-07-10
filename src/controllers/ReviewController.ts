@@ -6,56 +6,84 @@ let nextReviewId = reviews.length + 1;
 const ReviewsController = () => {
     const router = express.Router();
 
-    // Obtener review
-    router.get("/:juegoId", (req: Request, res: Response) => {
+    // Obtener reseñas de un juego
+    router.get("/:juegoId", async (req: Request, res: Response) => {
         const juegoId = parseInt(req.params.juegoId);
 
-        const resultado = reviews
-            .filter(r => r.juegoId === juegoId)
-            .map(r => {
-                const usuario = usuarios.find(u => u.usuarioId === r.usuarioId);
-                return {
-                    reviewId: r.reviewId,
-                    juegoId: r.juegoId,
-                    usuarioId: r.usuarioId,
-                    username: usuario?.username || "Usuario desconocido",
-                    rating: r.rating,
-                    comment: r.comment,
-                    fecha: r.fecha
-                };
+        try {
+            const reviews = await prisma.review.findMany({
+                where: { juegoId },
+                include: {
+                    usuario: true,  // Incluye los detalles del usuario en la reseña
+                },
             });
 
-        res.json(resultado);
+            // Formatear las reseñas antes de responder
+            const resultado = reviews.map(r => ({
+                reviewId: r.reviewId,
+                juegoId: r.juegoId,
+                usuarioId: r.usuarioId,
+                username: r.usuario.username, // Usando el nombre del usuario desde la relación
+                rating: r.rating,
+                comment: r.comment,
+                fecha: r.fecha,
+            }));
+
+            res.json(resultado);
+        } catch (error) {
+            console.error("Error al obtener reseñas:", error);
+            res.status(500).json({ error: "Error al obtener reseñas" });
+        }
     });
 
-    // Crear nueva reseña
-    router.post("/", (req: Request, res: Response) => {
-        const { juegoId, usuarioId, rating, comment } = req.body;
+    // Crear una nueva reseña
+    router.post("/:juegoId", verificarTokenMiddleware, async (req: Request, res: Response) => {
+        const { rating, comment } = req.body;
+        const juegoId = parseInt(req.params.juegoId);
+        const usuarioId = req.user.id;  // Usuario del token autenticado
 
-        if (!juegoId || !usuarioId || typeof rating !== "number") {
-            res.status(400).json({ error: "Datos incompletos" });
-            return
+        try {
+            // Verificar si el juego existe
+            const juego = await prisma.juego.findUnique({
+                where: { juegoId },
+            });
+
+            if (!juego) {
+                return res.status(404).json({ error: "Juego no encontrado" });
+            }
+
+            // Verificar si el usuario ha comprado el juego
+            const historialCompras = await prisma.venta.findMany({
+                where: {
+                    usuarioId,
+                    juegos: {
+                        some: {
+                            juegoId,
+                        },
+                    },
+                },
+            });
+
+            if (historialCompras.length === 0) {
+                return res.status(403).json({ error: "No has comprado este juego" });
+            }
+
+            // Crear la nueva reseña
+            const nuevaResena = await prisma.review.create({
+                data: {
+                    rating,
+                    comment,
+                    juegoId,
+                    usuarioId,
+                    fecha: new Date(),
+                },
+            });
+
+            res.status(201).json(nuevaResena);
+        } catch (error) {
+            console.error("Error al agregar reseña:", error);
+            res.status(500).json({ error: "Error interno al agregar reseña" });
         }
-
-        const juegoExiste = juegos.find(j => j.juegoId === juegoId);
-        const usuarioExiste = usuarios.find(u => u.usuarioId === usuarioId);
-
-        if (!juegoExiste || !usuarioExiste) {
-            res.status(404).json({ error: "Juego o usuario no encontrado" });
-            return
-        }
-
-        const nuevaReview: Review = {
-            reviewId: nextReviewId++,
-            juegoId,
-            usuarioId,
-            rating,
-            comment,
-            fecha: new Date().toISOString().split("T")[0]
-        };
-
-        reviews.push(nuevaReview);
-        res.status(201).json(nuevaReview);
     });
 
     return router;
