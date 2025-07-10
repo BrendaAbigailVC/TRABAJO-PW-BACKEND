@@ -401,62 +401,20 @@ const JuegosController = () => {
   });
 
   // Ranking de juegos más vendidos
-router.get("/ranking", async (req: Request, res: Response) => {
-  try {
-    const juegos = await prisma.juego.findMany({
-      orderBy: {
-        ventas: 'desc', // Ordenar de mayor a menor
-      },
-      include: {
-        categoria: true,
-        plataforma: true,
-        imagenes: true,
-      },
-    });
-
-    const juegosFormateados = juegos.map(juego => ({
-      id: juego.juegoId,
-      nombre: juego.nombre,
-      descripcion: juego.descripcion,
-      precio: juego.precio,
-      descuento: juego.descuento,
-      oferta: juego.oferta,
-      ventas: juego.ventas,
-      valoracion: juego.valoracion,
-      imagen: juego.imagen,
-      trailer: juego.trailer,
-      fecha: juego.fecha,
-      categoria: juego.categoria?.nombre || "Desconocida",
-      plataforma: juego.plataforma?.nombre || "Desconocida",
-      imagenes: juego.imagenes.map(img => img.urlImagen),
-    }));
-
-    res.json(juegosFormateados);
-  } catch (error) {
-    console.error("Error al obtener el ranking de juegos:", error);
-    res.status(500).json({ error: "Error interno al obtener el ranking de juegos" });
-  }
-
-  // Obtener juego por ID con imágenes extra
-  router.get("/:id", async (req: Request, res: Response) => {
-    const juegoId = parseInt(req.params.id)
-
+  router.get("/ranking", async (req: Request, res: Response) => {
     try {
-      const juego = await prisma.juego.findUnique({
-        where: { juegoId },
+      const juegos = await prisma.juego.findMany({
+        orderBy: {
+          ventas: 'desc', // Ordenar de mayor a menor
+        },
         include: {
           categoria: true,
           plataforma: true,
           imagenes: true,
-        }
-      })
+        },
+      });
 
-      if (!juego) {
-        res.status(404).json({ error: "Juego no encontrado" })
-        return
-      }
-
-      const juegoFormateado = {
+      const juegosFormateados = juegos.map(juego => ({
         id: juego.juegoId,
         nombre: juego.nombre,
         descripcion: juego.descripcion,
@@ -470,54 +428,97 @@ router.get("/ranking", async (req: Request, res: Response) => {
         fecha: juego.fecha,
         categoria: juego.categoria?.nombre || "Desconocida",
         plataforma: juego.plataforma?.nombre || "Desconocida",
-        imagenes: juego.imagenes.map((img) => img.urlImagen),
-      }
+        imagenes: juego.imagenes.map(img => img.urlImagen),
+      }));
 
-      res.json(juegoFormateado)
+      res.json(juegosFormateados);
     } catch (error) {
-      console.error("Error al obtener juego por ID:", error)
-      res.status(500).json({ error: "Error interno al obtener juego" })
+      console.error("Error al obtener el ranking de juegos:", error);
+      res.status(500).json({ error: "Error interno al obtener el ranking de juegos" });
     }
-  })
+    })
 
-// Obtener juegos ordenados por valoración descendente
-router.get("/api/juegos/mas-valorados", async (req: Request, res: Response) => {
-  try {
-    const juegos = await prisma.juego.findMany({
-      orderBy: {
-        valoracion: 'desc',
-      },
-      include: {
-        categoria: true,
-        plataforma: true,
-      },
+    // Obtener juego por ID con imágenes extra
+    router.get("/:id", async (req: Request, res: Response) => {
+      const juegoId = parseInt(req.params.id)
+
+      try {
+        const juego = await prisma.juego.findUnique({
+          where: { juegoId },
+          include: {
+            categoria: true,
+            plataforma: true,
+            imagenes: true,
+          }
+        })
+
+        if (!juego) {
+          res.status(404).json({ error: "Juego no encontrado" })
+          return
+        }
+
+        const juegoFormateado = {
+          id: juego.juegoId,
+          nombre: juego.nombre,
+          descripcion: juego.descripcion,
+          precio: juego.precio,
+          descuento: juego.descuento,
+          oferta: juego.oferta,
+          ventas: juego.ventas,
+          valoracion: juego.valoracion,
+          imagen: juego.imagen,
+          trailer: juego.trailer,
+          fecha: juego.fecha,
+          categoria: juego.categoria?.nombre || "Desconocida",
+          plataforma: juego.plataforma?.nombre || "Desconocida",
+          imagenes: juego.imagenes.map((img) => img.urlImagen),
+        }
+
+        res.json(juegoFormateado)
+      } catch (error) {
+        console.error("Error al obtener juego por ID:", error)
+        res.status(500).json({ error: "Error interno al obtener juego" })
+      }
+    })
+
+    // Obtener juegos ordenados por valoración descendente
+    router.get("/api/juegos/mas-valorados", async (req: Request, res: Response) => {
+      try {
+        const juegos = await prisma.juego.findMany({
+          orderBy: {
+            valoracion: 'desc',
+          },
+          include: {
+            categoria: true,
+            plataforma: true,
+          },
+        });
+
+        const juegosEnriquecidos = juegos.map(juego => ({
+          id: juego.juegoId,
+          nombre: juego.nombre,
+          descripcion: juego.descripcion,
+          precio: juego.precio,
+          descuento: juego.descuento,
+          oferta: juego.oferta,
+          ventas: juego.ventas,
+          valoracion: juego.valoracion,
+          imagen: juego.imagen,
+          trailer: juego.trailer,
+          fecha: juego.fecha,
+          categoria: juego.categoria?.nombre || "Desconocida",
+          plataforma: juego.plataforma?.nombre || "Desconocida",
+        }));
+
+        res.json(juegosEnriquecidos);
+      } catch (error) {
+        console.error("Error al obtener juegos más valorados:", error);
+        res.status(500).json({ msg: "Error al obtener juegos más valorados" });
+      }
     });
 
-    const juegosEnriquecidos = juegos.map(juego => ({
-      id: juego.juegoId,
-      nombre: juego.nombre,
-      descripcion: juego.descripcion,
-      precio: juego.precio,
-      descuento: juego.descuento,
-      oferta: juego.oferta,
-      ventas: juego.ventas,
-      valoracion: juego.valoracion,
-      imagen: juego.imagen,
-      trailer: juego.trailer,
-      fecha: juego.fecha,
-      categoria: juego.categoria?.nombre || "Desconocida",
-      plataforma: juego.plataforma?.nombre || "Desconocida",
-    }));
 
-    res.json(juegosEnriquecidos);
-  } catch (error) {
-    console.error("Error al obtener juegos más valorados:", error);
-    res.status(500).json({ msg: "Error al obtener juegos más valorados" });
+    return router
   }
-});
-
-
-  return router
-}
 
 export default JuegosController
