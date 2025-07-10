@@ -42,7 +42,7 @@ const JuegosController = () => {
   })
 
   // Agregar un juego nuevo
-  router.post("/", verificarTokenMiddleware,  async (req: Request, res: Response) => {
+  router.post("/", verificarTokenMiddleware, async (req: Request, res: Response) => {
     const {
       nombre,
       descripcion,
@@ -220,30 +220,12 @@ const JuegosController = () => {
   router.delete("/:id", verificarTokenMiddleware, async (req: Request, res: Response) => {
     const juegoId = parseInt(req.params.id);
     try {
-      // Eliminar imágenes asociadas
-      await prisma.imagenJuego.deleteMany({
-        where: { juegoId }
-      });
-
-      // Eliminar claves asociadas
-      await prisma.claveJuego.deleteMany({
-        where: { juegoId }
-      });
-
-      // Eliminar reviews asociadas
-      await prisma.review.deleteMany({
-        where: { juegoId }
-      });
-
-      // Eliminar ventas asociadas (si aplica)
-      await prisma.venta.deleteMany({
-        where: { juegoId }
-      });
-
-      // Eliminar el juego
-      const eliminado = await prisma.juego.delete({
-        where: { juegoId }
-      });
+      await prisma.imagenJuego.deleteMany({ where: { juegoId } });
+      await prisma.claveDisponible.deleteMany({ where: { juegoId } });
+      await prisma.claveJuego.deleteMany({ where: { juegoId } });
+      await prisma.review.deleteMany({ where: { juegoId } });
+      await prisma.venta.deleteMany({ where: { juegoId } });
+      const eliminado = await prisma.juego.delete({ where: { juegoId } });
 
       res.json({
         id: eliminado.juegoId,
@@ -253,7 +235,7 @@ const JuegosController = () => {
       if (error.code === "P2025") {
         res.status(404).json({ error: "Juego no encontrado" });
       } else {
-        console.error(error);
+        console.error("Error al eliminar juego:", error);
         res.status(500).json({ error: "Error al eliminar el juego" });
       }
     }

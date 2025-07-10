@@ -1,7 +1,7 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjUsImVtYWlsIjoiYnJlbmRAZ21haWwuY29tIiwiaWF0IjoxNzUyMDA4MDU3LCJleHAiOjE3NTIwMTUyNTd9.cjJd-JbRsdfnZ03wGOIe38G7euvzUfw2Yo6j7Mv7AbM
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEwLCJlbWFpbCI6ImJyZW5kYTk0OTMxM0BnbWFpbC5jb20iLCJpYXQiOjE3NTIxMDk0MTEsImV4cCI6MTc1MjExNjYxMX0.PdIVbOER2jpHk1EIld3HmeBtDzI_wz-DRSiynlNIM34
 
 ### Obtener todos los juegos
-GET http://localhost:5000/juegos HTTP/1.1
+GET https://trabajo-pw-backend.onrender.com/juegos HTTP/1.1
 
 ### Obtener juego por id
 GET http://localhost:5000/juegos/41 HTTP/1.1

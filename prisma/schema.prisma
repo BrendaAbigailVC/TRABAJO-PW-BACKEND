@@ -85,8 +85,8 @@ model Plataforma {
 
 model ClaveJuego {
   claveJuegoId Int    @id @default(autoincrement())
-  juegoId      Int
-  juego        Juego  @relation("JuegoAClavesVendidas", fields: [juegoId], references: [juegoId])
+  juegoId      Int? 
+  juego        Juego? @relation("JuegoAClavesVendidas", fields: [juegoId], references: [juegoId], onDelete: SetNull)
   ventaId      Int  
   venta        Venta  @relation(fields: [ventaId], references: [ventaId])
   codigoClave  String
