@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { usuarios } from "../data";
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient } from "../generated/prisma";
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const prisma = new PrismaClient();
