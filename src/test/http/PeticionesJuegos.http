@@ -6,6 +6,10 @@ GET https://trabajo-pw-backend.onrender.com/juegos HTTP/1.1
 ### Obtener todos los juegos mas vendidos
 GET https://trabajo-pw-backend.onrender.com/juegos/ranking HTTP/1.1
 
+
+### Obtener todos los juegos mas vendidos
+GET https://trabajo-pw-backend.onrender.com/juegos/ranking HTTP/1.1
+
 ### Obtener juego por id
 GET http://localhost:5000/juegos/41 HTTP/1.1
 
@@ -80,16 +84,8 @@ GET http://localhost:5000/juegos/categorias HTTP/1.1
 ###Obtener plataformas juegos
 GET http://localhost:5000/juegos/plataformas HTTP/1.1
 
-<<<<<<< HEAD
-### Obtener ranking de juegos más vendidos
-GET http://localhost:5000/juegos/ranking HTTP/1.1
-
-
-
-=======
 
 ### Obtener mas valorado
 GET http://localhost:5000/juegos/api/juegos/mas-valorados
->>>>>>> 500384c9177ba7098966b9f0e830c3254d7adbcb
 
 

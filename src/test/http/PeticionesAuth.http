@@ -32,18 +32,18 @@ POST https://trabajo-pw-backend.onrender.com/auth/registrar
 Content-Type: application/json
 
 {
-  "email": "admin@admin.com",
+  "email": "brend4993vc@gmail.com",
   "password": "admin123",
   "username": "Admin",
   "rol": "admin"
 }
 
 ### Verificar código
-POST http://localhost:5000/auth/verificar
+POST https://trabajo-pw-backend.onrender.com/auth/verificar
 Content-Type: application/json
 
 {
-  "email": "admin@admin.com",
-  "codigo": "779673",
+  "email": "brend4993vc@gmail.com",
+  "codigo": "849195",
   "rol": "admin"
 }

@@ -1,13 +1,14 @@
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvSWQiOjEsImVtYWlsIjoiYnJlbmRhOTQ5MzEzQGdtYWlsLmNvbSIsImlhdCI6MTc1MjEzODMxNiwiZXhwIjoxNzUyMTQ1NTE2fQ.vfaSPYRBaOdyZrt3gRz2rEQJYOQxVXuOabITOkNHTR8
+
 ### Obtener todos los review de un juego
 GET http://localhost:5000/reviews/1 HTTP/1.1
 
 ### Crear nuevo review
-POST  http://localhost:5000/reviews HTTP/1.1
+POST  http://localhost:5000/reviews/6 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "juegoId": 1,
-    "usuarioId": 2,
-    "rating": 5,
-    "comment": "¡Excelente juego!"
+  "rating": 4,
+  "comment": "Muy buen juego, excelente jugabilidad."
 }

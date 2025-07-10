@@ -28,7 +28,6 @@ app.use("/usuarios", UsuariosController());
 app.use("/ventas", VentasController()); 
 app.use("/claves", ClaveController()); 
 
-
 app.listen(PORT, ()=>{
     console.log(`Servidor iniciado en puerto ${PORT}`)
 })
