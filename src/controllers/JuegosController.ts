@@ -400,6 +400,43 @@ const JuegosController = () => {
     }
   });
 
+  // Ranking de juegos más vendidos
+router.get("/ranking", async (req: Request, res: Response) => {
+  try {
+    const juegos = await prisma.juego.findMany({
+      orderBy: {
+        ventas: 'desc', // Ordenar de mayor a menor
+      },
+      include: {
+        categoria: true,
+        plataforma: true,
+        imagenes: true,
+      },
+    });
+
+    const juegosFormateados = juegos.map(juego => ({
+      id: juego.juegoId,
+      nombre: juego.nombre,
+      descripcion: juego.descripcion,
+      precio: juego.precio,
+      descuento: juego.descuento,
+      oferta: juego.oferta,
+      ventas: juego.ventas,
+      valoracion: juego.valoracion,
+      imagen: juego.imagen,
+      trailer: juego.trailer,
+      fecha: juego.fecha,
+      categoria: juego.categoria?.nombre || "Desconocida",
+      plataforma: juego.plataforma?.nombre || "Desconocida",
+      imagenes: juego.imagenes.map(img => img.urlImagen),
+    }));
+
+    res.json(juegosFormateados);
+  } catch (error) {
+    console.error("Error al obtener el ranking de juegos:", error);
+    res.status(500).json({ error: "Error interno al obtener el ranking de juegos" });
+  }
+
   // Obtener juego por ID con imágenes extra
   router.get("/:id", async (req: Request, res: Response) => {
     const juegoId = parseInt(req.params.id)
@@ -442,6 +479,17 @@ const JuegosController = () => {
       res.status(500).json({ error: "Error interno al obtener juego" })
     }
   })
+
+
+});
+
+
+
+
+
+
+
+
 
   return router
 }

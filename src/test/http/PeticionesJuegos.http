@@ -76,3 +76,11 @@ GET http://localhost:5000/juegos/categorias HTTP/1.1
 
 ###Obtener plataformas juegos
 GET http://localhost:5000/juegos/plataformas HTTP/1.1
+
+### Obtener ranking de juegos más vendidos
+GET http://localhost:5000/juegos/ranking HTTP/1.1
+
+
+
+
+
