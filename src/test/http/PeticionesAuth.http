@@ -1,4 +1,4 @@
-POST http://localhost:5000/auth/registrar
+POST https://trabajo-pw-backend.onrender.com/auth/registrar
 Content-Type: application/json
 
 {
